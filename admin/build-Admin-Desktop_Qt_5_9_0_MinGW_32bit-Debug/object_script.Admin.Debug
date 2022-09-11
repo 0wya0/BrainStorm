@@ -1,0 +1,12 @@
+INPUT(
+./debug\main.o
+./debug\login.o
+./debug\communicate.o
+./debug\admin.o
+./debug\myftp.o
+./debug\qrc_res.o
+./debug\moc_login.o
+./debug\moc_communicate.o
+./debug\moc_admin.o
+./debug\moc_myftp.o
+);

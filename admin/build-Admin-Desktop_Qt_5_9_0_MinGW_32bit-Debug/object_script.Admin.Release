@@ -1,0 +1,12 @@
+INPUT(
+./release\main.o
+./release\login.o
+./release\communicate.o
+./release\admin.o
+./release\myftp.o
+./release\qrc_res.o
+./release\moc_login.o
+./release\moc_communicate.o
+./release\moc_admin.o
+./release\moc_myftp.o
+);

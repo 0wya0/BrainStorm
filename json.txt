@@ -1,0 +1,188 @@
+//5XXX -- 用户操作
+#define OK                  5000	//操作成功
+#define REGISTER            5001	//注册
+#define LOGIN               5002	//登录
+#define SIGNLE_GETQUESTION	5003	//个人训练获取题目
+#define RANK                5004	//排位赛
+#define ANSWER              5005	//排位赛中回答问题
+#define RANKOVER            5006    //排位赛结束,将结果发给服务器
+#define CANCEL              5007 	//取消匹配
+
+//6XXX -- 管理员操作
+#define ADMIN               6000	//管理员上线
+#define RANKLIST            6001    //管理员查看排名
+#define ADVERT              6002    //广告
+
+//8XXX -- 发生错误
+#define ERROR               8001	//未知错误
+#define USEREXIST           8002	//用户已存在
+#define NAMEORPASSWORD		8003    //账号(用户名)或密码错误
+#define USERLOGIN           8004	//用户已登录
+#define ENEMYERROR          8005    //对手在答题时掉线
+
+//其它
+#define QUESTION_NUM 		5       //每次答题获取的题目数(包括rank和single)
+
+
+/****************************用户/服务器**************************/
+
+1.注册
+Input:
+{
+	"cmd" : REGISTER,
+	"username" : "XXX",
+	"password" : "XXXXX"
+}
+Output:
+{
+	"cmd" : REGISTER,
+	"result" : OK/ERROR/USEREXIST
+}
+2.登录
+Input:
+{
+	"cmd"      : LOGIN,
+	"username" : "XXX",
+	"password" : "XXXXX"
+}
+Output:
+{
+	"cmd"      : LOGIN,
+	"result"   : OK/ERROR/USERLOGIN/NAMEORPASSWORD
+	"username" : "XXX",
+	"rank"     : "XXX"
+}
+3.获取题目: 题目随机获取
+Input:
+{
+	"cmd" : SIGNLE_GETQUESTION
+}
+Output:
+{
+	"cmd"    	: SIGNLE_GETQUESTION,
+	"result" 	: OK/ERROR,
+	"question"  : 
+	{
+		"id"       : ["3","2","1","5","4"],
+		"question" : ["question_3", "question_2", "question_1", "question_5", "question_4"],
+		"selectA"  : ["selectA_3", "selectA_2", "selectA_1", "selectA_5", "selectA_4"],
+		"selectB"  : ["selectB_3", "selectB_2", "selectB_1", "selectB_5", "selectB_4"],
+		"selectC"  : ["selectC_3", "selectC_2", "selectC_1", "selectC_5", "selectC_4"],
+		"selectA"  : ["selectD_3", "selectD_2", "selectD_1", "selectD_5", "selectD_4"],
+		"answer"   : ["answer_3", "answer_2", "answer_1", "answer_5", "answer_4"]
+	}
+}
+4.匹配赛-寻找对决
+Input:
+{
+	"cmd" : RANK
+}
+Output:
+{
+	"cmd"       : RANK
+	"result" 	: OK/ERROR,
+	"question"  : 
+	{
+		"id"       : ["3","2","1","5","4"],
+		"question" : ["question_3", "question_2", "question_1", "question_5", "question_4"],
+		"selectA"  : ["selectA_3", "selectA_2", "selectA_1", "selectA_5", "selectA_4"],
+		"selectB"  : ["selectB_3", "selectB_2", "selectB_1", "selectB_5", "selectB_4"],
+		"selectC"  : ["selectC_3", "selectC_2", "selectC_1", "selectC_5", "selectC_4"],
+		"selectA"  : ["selectD_3", "selectD_2", "selectD_1", "selectD_5", "selectD_4"],
+		"answer"   : ["answer_3", "answer_2", "answer_1", "answer_5", "answer_4"]
+	}
+	"enemyname" : "XXXXX",
+	"enemyrank" : "XXXXX"
+}
+5.匹配赛-取消匹配等待
+Input:
+{
+	"cmd" : CANCEL
+}
+Output:
+{
+	没有回复,服务器直接将用户从匹配等待队列移除 
+}
+6.匹配赛-同步题目-对手掉线
+Input:
+{
+	"cmd"        : ANSWER
+	"enemyname"  : "m_enemyName",
+    "score"      : m_selfScore,
+    "questionId" : m_curRankQuestion
+}
+Output:
+{
+	"cmd"             : ANSWER,
+	"enemyscore"      : enemyscore,
+	"enemyQuestionId" : enemyQuestionId
+}
+{
+	"cmd" : ENEMYERROR
+}
+7.匹配赛-对战结束
+Input:
+{
+	"cmd"        ： RANKOVER,
+	"score"      ： m_selfScore,
+	"enemyscore" ： m_enemyScore,
+	"enemyname"  ： "m_enemyName"
+}
+Output:
+{
+	"cmd" : RANKOVER,
+    "newRank" : "newRank"
+}
+
+/***************************admin/服务器**************************/
+
+1.登录
+Input:
+{
+	"cmd"      : ADMIN,
+    "username" : "admin",
+    "password" : "admin"
+}
+Output:
+{
+	"cmd"    : ADMIN,
+	"result" : ERROR/OK
+}
+2.查看排行榜Top
+Input:
+{
+	"cmd" : RANKLIST
+}
+Output:
+{
+	"cmd"      : RANKLIST,
+	"rankList" :
+	{
+		"username" : ["top_1_username", ... , "top_20_username"],
+		"rank"     : [top_1_rank, ... , top_20_rank]
+	}
+}
+3.更新广告
+Input:
+{
+	"cmd"      : ADVERT,
+    "fileName" : "fileName",
+    "fileSize" : fileSize
+}
+Output:
+{
+	没有回复, 服务器转发给每个用户
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

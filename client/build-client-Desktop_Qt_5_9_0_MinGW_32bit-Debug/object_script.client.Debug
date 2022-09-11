@@ -1,0 +1,14 @@
+INPUT(
+./debug\main.o
+./debug\login.o
+./debug\register.o
+./debug\communicate.o
+./debug\brainstorm.o
+./debug\myftp.o
+./debug\qrc_pic.o
+./debug\moc_login.o
+./debug\moc_register.o
+./debug\moc_communicate.o
+./debug\moc_brainstorm.o
+./debug\moc_myftp.o
+);
